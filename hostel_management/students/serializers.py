@@ -34,3 +34,4 @@ class StudentSerializers(serializers.ModelSerializer):
         )
 
         return student
+    

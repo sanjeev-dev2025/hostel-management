@@ -17,6 +17,21 @@ class StudentListCreateAPIView(generics.ListCreateAPIView):
             return [IsAdminUserOrWarden()]
         else:
             return [IsAuthenticated()]
-
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        if not self.request.user.is_staff:
+            queryset=queryset.filter(user=self.request.user)
+        return queryset
     
-    
+class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset=Student.objects.all()
+    serializer_class=StudentSerializers
+    lookup_field='student_id'
+    lookup_url_kwarg='student_id'
+    def get_permissions(self):
+        if self.request.method=='PATCH' or self.request.method=='DELETE':
+            return [IsAdminUserOrWarden()]
+        elif self.request.method=='PUT':
+            return [IsStudentUser() or IsAdminUserOrWarden()]
+        else:
+            return [IsAuthenticated()]    

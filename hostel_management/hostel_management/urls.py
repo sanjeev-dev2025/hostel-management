@@ -22,4 +22,5 @@ urlpatterns = [
     path('auth/',include('dj_rest_auth.urls')),
     path('',include('accounts.urls')),
     path('',include('students.urls')),
+    path('',include('hostel.urls')),    
 ]

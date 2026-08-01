@@ -101,6 +101,6 @@ class Payment(models.Model):
 
     def __str__(self):
         return (
-            f"{self.student.student_id} - "
+            f"{self.student.first_name} {self.student.last_name} {self.student.student_id} - "
             f"{self.get_billing_month_display()} {self.billing_year}"
         )

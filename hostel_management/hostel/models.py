@@ -28,15 +28,15 @@ class Room(models.Model):
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     def __str__(self):
-        return self.room_number+"  "+ self.hostel.name
+        return f"{self.room_number}{self.hostel.name}{self.room_type}"
     
 class RoomAllotment(models.Model):
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
     room=models.ForeignKey(Room,on_delete=models.CASCADE)
     room_allocated_date=models.DateField(auto_now_add=True)
-    created_at=models.DateField(auto_now_add=True)
+    created_at=models.DateField(auto_now_add=True)  
     updated_at=models.DateField(auto_now=True)
     is_active=models.BooleanField(default=True)
 
     def __str__(self):
-        return self.student.first_name+'----'+self.room.room_number 
+        return f"{self.student.first_name}{self.student.student_id}{self.room.room_number} {self.room.room_type}"

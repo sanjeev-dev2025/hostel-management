@@ -1,6 +1,6 @@
 from payments.models import RoomPrice,Payment   
 from rest_framework import serializers
-
+from hostel.models import RoomAllotment
 class RoomPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomPrice
@@ -63,10 +63,18 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
         # Check student has room allocation
-        if not hasattr(student, "room_allocation"):
+        room_allotment = RoomAllotment.objects.filter(
+            student=student,
+            is_active=True
+        ).first()
+
+        if room_allotment is None:
             raise serializers.ValidationError(
                 "Student has no room allocated."
-            )
+    )
+
+        room = room_allotment.room  
+        
 
 
         return data
@@ -77,8 +85,12 @@ class PaymentSerializer(serializers.ModelSerializer):
         student = validated_data["student"]
 
         # Get student's room
-        room = student.room_allocation.room
+        room_allotment = RoomAllotment.objects.get(
+            student=student,
+            is_active=True
+        )
 
+        room = room_allotment.room
 
         # Get room price according to room type
         room_price = RoomPrice.objects.get(

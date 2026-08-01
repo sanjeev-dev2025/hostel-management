@@ -50,9 +50,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', 
     'rest_framework.authtoken',
 ]
-DJ_REST_AUTH = {
-    "TOKEN_MODEL": None,
-}
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -149,3 +147,7 @@ SPECTACULAR_SETTINGS={
 }
 
 AUTH_USER_MODEL="accounts.User"
+REST_AUTH = {
+    "USE_JWT": True,
+    "TOKEN_MODEL": None,
+}

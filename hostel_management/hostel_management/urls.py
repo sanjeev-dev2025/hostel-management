@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 # pyrefly: ignore [missing-import]
+from accounts.views import CustomLoginView
 from drf_spectacular.views import SpectacularAPIView,SpectacularSwaggerView
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/login/',CustomLoginView.as_view()),
     path('auth/',include('dj_rest_auth.urls')),
     path('',include('accounts.urls')),
     path('',include('students.urls')),

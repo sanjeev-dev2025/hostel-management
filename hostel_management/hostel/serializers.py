@@ -1,7 +1,5 @@
-from hostel.models import RoomAllotment
+from hostel.models import RoomAllotment,Room,Hostel
 from rest_framework import serializers
-from students.serializers import StudentSerializers
-
 
 class RoomAllotmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,3 +73,13 @@ class RoomAllotmentSerializer(serializers.ModelSerializer):
 
 
         return allocation
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Room
+        fields=["id","room_number","room_type","capacity","occupied","hostel","created_at","updated_at"]
+
+class HostelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Hostel
+        fields=["id","name","gender","created_at","updated_at"] 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'dashboard',
     'payments',
     'django_filters',
+    'drf_spectacular',
     'corsheaders',  
     'rest_framework_simplejwt', 
     'rest_framework.authtoken',
@@ -134,6 +135,17 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
 
-    )
+    ),
+    "DEFAULT_FILTER_BACKENDS":['django_filters.rest_framework.DjangoFilterBackend'],
+    "DEFAULT_PAGINATION_CLASS":"rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE":15,
+    "DEFAULT_SCHEMA_CLASS":"drf_spectacular.openapi.AutoSchema",
+}       
+SPECTACULAR_SETTINGS={
+    "TITLE":"hostel Management system",
+    "VERSION":"1.0.0",
+    "DESCRIPTION":"hostel Management system",    
+    "SERVE_INCLUDE_SCHEMA":False,
 }
+
 AUTH_USER_MODEL="accounts.User"

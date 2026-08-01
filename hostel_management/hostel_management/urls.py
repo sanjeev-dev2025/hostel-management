@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+# pyrefly: ignore [missing-import]
+from drf_spectacular.views import SpectacularAPIView,SpectacularSwaggerView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/',include('dj_rest_auth.urls')),
     path('',include('accounts.urls')),
     path('',include('students.urls')),
     path('',include('hostel.urls')),    
+    path('',include('payments.urls')),
+    path('api/schema/',SpectacularAPIView.as_view(),name='schema') , 
+    path('swagger/',SpectacularSwaggerView.as_view(url_name='schema')),
+    path('swagger/redoc/',SpectacularSwaggerView.as_view(url_name='schema', template_name='swagger/redoc.html')),
 ]

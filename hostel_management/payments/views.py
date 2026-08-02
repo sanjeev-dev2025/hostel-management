@@ -35,8 +35,8 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
             return [IsAuthenticated()]
     def get_queryset(self):
         queryset=super().get_queryset()
-        if not self.request.user.is_staff:
-            queryset=queryset.filter(user=self.request.user)
+        if hasattr(self.request.user, 'role') and self.request.user.role == 'STUDENT':
+            queryset=queryset.filter(student__user=self.request.user)
         return queryset
 class PaymentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Payment.objects.all()

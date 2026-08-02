@@ -151,3 +151,5 @@ REST_AUTH = {
     "USE_JWT": True,
     "TOKEN_MODEL": None,
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

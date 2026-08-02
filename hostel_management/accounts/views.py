@@ -19,7 +19,7 @@ class UserCreateAPIView(generics.CreateAPIView):
     permission_classes=[IsAdminUser]
 # accounts/views.py
 
-from dj_rest_auth.views import LoginView
+from dj_rest_auth.views import LoginView, PasswordChangeView
 
 class CustomLoginView(LoginView):
     def get_response(self):
@@ -32,4 +32,12 @@ class CustomLoginView(LoginView):
         response.data["role"] = user.role
         response.data["must_change_password"] = user.must_change_password
 
+        return response
+
+class CustomPasswordChangeView(PasswordChangeView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            request.user.must_change_password = False
+            request.user.save()
         return response

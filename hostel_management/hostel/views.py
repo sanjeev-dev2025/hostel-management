@@ -14,7 +14,13 @@ class RoomAllotmentListCreateAPIView(generics.ListCreateAPIView):
     def get_permissions(self):
         if self.request.method=="POST":
             return [IsAdminUser()]
-        return [IsAdminUser()]    
+        return [IsAuthenticated()]    
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if hasattr(self.request.user, 'role') and self.request.user.role == 'STUDENT':
+            queryset = queryset.filter(student__user=self.request.user)
+        return queryset
 
 class RoomAllotmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset=RoomAllotment.objects.all()
@@ -40,7 +46,7 @@ class RoomListCreateAPIView(generics.ListCreateAPIView):
         if self.request.method=='POST':
             return [IsAdminUser()]
         else:
-            return [IsAdminUserOrWarden()] 
+            return [IsAuthenticated()]
     def perform_destroy(self, instance):
        instance.delete()
 

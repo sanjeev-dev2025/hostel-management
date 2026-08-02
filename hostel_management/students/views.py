@@ -1,16 +1,18 @@
+from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.shortcuts import render
 
 # Create your views here.   
-from students.serializers import StudentSerializers
+from students.serializers import StudentSerializers,StudentCredentialSerializer
 from rest_framework import generics
-from students.models import Student
+from students.models import Student,StudentCredential
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from accounts.permissions import IsAdminUser,IsWardenUser,IsStudentUser,IsAdminUserOrWarden
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend 
 from students.filters import StudentFilter   
+
 class StudentListCreateAPIView(generics.ListCreateAPIView):
     queryset=Student.objects.all()
     serializer_class=StudentSerializers
@@ -43,3 +45,9 @@ class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
             return [IsAdminUserOrWarden()] 
     def perform_destroy(self, instance):
         instance.delete()
+
+class AdminStudentCredentialsAPIView(generics.ListAPIView):
+    queryset = StudentCredential.objects.all().order_by('-created_at')
+    serializer_class = StudentCredentialSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    pagination_class = PageNumberPagination

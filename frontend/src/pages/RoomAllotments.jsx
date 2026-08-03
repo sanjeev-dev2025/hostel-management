@@ -107,7 +107,9 @@ export default function RoomAllotments({ studentView = false }) {
       setIsModalOpen(false);
       fetchData(pagination.page);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'An error occurred');
+      const data = error.response?.data;
+      const message = data?.detail || data?.non_field_errors?.[0] || 'An error occurred';
+      toast.error(message);
     }
   };
 

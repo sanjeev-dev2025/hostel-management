@@ -67,7 +67,7 @@ export default function Payments({ studentView = false }) {
 
   const openModal = (payment = null) => {
     if (payment) {
-      setEditingId(payment.student); // API uses student as pk for payment
+      setEditingId(payment.id); 
       reset({
         student: payment.student,
         billing_month: payment.billing_month,
@@ -91,7 +91,7 @@ export default function Payments({ studentView = false }) {
   const onSubmit = async (formData) => {
     try {
       if (editingId) {
-        await api.put(`/payment/${editingId}/`, formData);
+        await api.patch(`/payment/${editingId}/`, formData);
         toast.success('Payment updated successfully');
       } else {
         await api.post('/payment/', formData);
@@ -104,10 +104,10 @@ export default function Payments({ studentView = false }) {
     }
   };
 
-  const handleDelete = async (studentId) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this payment record?')) {
       try {
-        await api.delete(`/payment/${studentId}/`);
+        await api.delete(`/payment/${id}/`);
         toast.success('Payment deleted');
         fetchData(pagination.page);
       } catch (error) {
@@ -163,7 +163,7 @@ export default function Payments({ studentView = false }) {
             <Edit2 className="h-4 w-4" />
           </button>
           <button 
-            onClick={() => handleDelete(row.student)}
+            onClick={() => handleDelete(row.id)}
             className="p-1 text-slate-400 hover:text-danger transition-colors"
             title="Delete"
           >

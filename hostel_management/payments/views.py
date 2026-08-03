@@ -41,8 +41,6 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
 class PaymentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Payment.objects.all()
     serializer_class=PaymentSerializer
-    lookup_field='student_id'
-    lookup_url_kwarg='student_id'  
     def get_permissions(self):
         if self.request.method=='PATCH' or self.request.method=='DELETE' or self.request.method=='PUT':
             return [IsAdminUserOrAccountant()]

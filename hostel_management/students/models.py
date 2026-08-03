@@ -7,11 +7,23 @@ class Student(models.Model):
         MALE="MALE","male"
         FEMALE="FEMALE","female"
         OTHERS="OTHERS","others"
+    class Faculty(models.TextChoices):
+        BIT='BIT','bit'
+        BSCSIT='BSCSIT','bscsit'
+        BCA='BCA','bca'
+        BIM='BIM','bim'
+        BBS='BBS','bbs'
+        BBA='BBA','bba'
+        BBM='BBM','bbm'
+        BND='BND','bnd'
+    
+
     user=models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=CASCADE,related_name="student")
     first_name=models.CharField(max_length=40,null=False)
     last_name=models.CharField(max_length=40,null=False)
     student_id=models.CharField(max_length=20,unique=True,editable=False)
     address=models.CharField(max_length=50)
+    faculty=models.CharField(choices=Faculty.choices,max_length=10,null=False)
     phone_number=models.CharField(max_length=10,null=False)
     parents_name=models.CharField(max_length=40,null=False)
     parents_phone_number=models.CharField(max_length=10,null=False)
@@ -24,7 +36,7 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         if not self.student_id:
             last_id = Student.objects.count() + 1
-            self.student_id = f"BIT-{last_id:04d}"
+            self.student_id = f"{self.faculty}-{last_id:04d}"
 
         super().save(*args, **kwargs)
 

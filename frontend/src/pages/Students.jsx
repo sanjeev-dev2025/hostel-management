@@ -64,6 +64,7 @@ export default function Students() {
         gender: student.gender,
         date_of_birth: student.date_of_birth,
         date_of_admission: student.date_of_admission,
+        faculty: student.faculty,
         is_active: student.is_active
       });
     } else {
@@ -71,6 +72,7 @@ export default function Students() {
       reset({ 
         first_name: '', last_name: '', address: '', phone_number: '', 
         parents_name: '', parents_phone_number: '', gender: 'MALE', 
+        faculty: 'BIT',
         date_of_birth: '', date_of_admission: new Date().toISOString().split('T')[0], 
         is_active: true 
       });
@@ -124,6 +126,7 @@ export default function Students() {
         header: 'Name', 
         render: (row) => `${row.first_name} ${row.last_name}` 
     },
+    { header: 'Faculty', accessor: 'faculty' },
     { header: 'Gender', accessor: 'gender' },
     { header: 'Phone', accessor: 'phone_number' },
     { header: 'Admitted', accessor: 'date_of_admission' },
@@ -241,6 +244,26 @@ export default function Students() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            <SelectField
+              label="Faculty"
+              name="faculty"
+              register={register}
+              rules={{ required: 'Faculty is required' }}
+              error={errors.faculty}
+              options={[
+                { value: 'BIT', label: 'BIT' },
+                { value: 'BSCSIT', label: 'BSc.CSIT' },
+                { value: 'BCA', label: 'BCA' },
+                { value: 'BIM', label: 'BIM' },
+                { value: 'BBS', label: 'BBS' },
+                { value: 'BBA', label: 'BBA' },
+                { value: 'BBM', label: 'BBM' },
+                { value: 'BND', label: 'BND' },
+              ]}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <InputField
               label="Date of Birth"
               name="date_of_birth"
@@ -326,6 +349,10 @@ export default function Students() {
             <div className="flex justify-between border-b pb-2">
               <span className="text-slate-500">Name</span>
               <span className="font-medium text-slate-900">{viewStudent.first_name} {viewStudent.last_name}</span>
+            </div>
+            <div className="flex justify-between border-b pb-2">
+              <span className="text-slate-500">Faculty</span>
+              <span className="font-medium text-slate-900">{viewStudent.faculty}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
               <span className="text-slate-500">Gender</span>

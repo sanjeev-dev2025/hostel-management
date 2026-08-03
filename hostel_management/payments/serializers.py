@@ -27,6 +27,7 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = [
+            "id",
             "student",
             "amount",
             "billing_month",
@@ -39,6 +40,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         ]
 
         read_only_fields = [
+            "id",
             "amount",
             "payment_date",
             "created_at",
@@ -48,15 +50,22 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
 
-        student = data["student"]
+        student = data.get("student", getattr(self.instance, "student", None))
 
         # Check duplicate payment
-        if Payment.objects.filter(
-            student=student,
-            billing_month=data["billing_month"],
-            billing_year=data["billing_year"]
-        ).exists():
+        billing_month = data.get("billing_month", getattr(self.instance, "billing_month", None))
+        billing_year = data.get("billing_year", getattr(self.instance, "billing_year", None))
 
+        qs = Payment.objects.filter(
+            student=student,
+            billing_month=billing_month,
+            billing_year=billing_year
+        )
+
+        if self.instance:
+            qs = qs.exclude(id=self.instance.id)
+
+        if qs.exists():
             raise serializers.ValidationError(
                 "Payment already exists for this month."
             )
